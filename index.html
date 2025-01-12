@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +5,7 @@
         body {
             font-family: Arial, sans-serif;
             color: white;
-            background-color: black;
+            background-color: transparent; /* Make background transparent */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,11 +31,6 @@
         let minutes = 50; // Initial minutes for the work session
         let seconds = 0;
 
-        // Alarm sound
-        const alarmSound = new Audio();
-        alarmSound.src = "https://www.soundjay.com/button/beep-07.wav"; // Replace with your desired sound URL
-        alarmSound.volume = 0.5; // Adjust volume as needed
-
         function updateTimer() {
             const timer = document.getElementById("timer");
             const session = document.getElementById("session");
@@ -46,9 +40,6 @@
 
             // Handle the timer reaching zero
             if (minutes === 0 && seconds === 0) {
-                // Play the alarm sound
-                alarmSound.play();
-
                 // Switch between work and break sessions
                 isWorkSession = !isWorkSession;
                 if (isWorkSession) {
