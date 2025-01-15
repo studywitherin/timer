@@ -5,7 +5,7 @@
         body {
             font-family: Arial, sans-serif;
             color: white;
-            background-color: transparent;
+            background-color: transparent; /* Makes the background transparent */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,4 +21,68 @@
             margin-top: 10px;
         }
         button {
-            margin-top
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="timer">50:00</div>
+        <div id="session">Work Session</div>
+        <button id="startButton">Start Timer</button>
+        <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+    </div>
+    <script>
+        let isWorkSession = true; // Tracks whether it's a work or break session
+        let minutes = 50; // Initial minutes for the work session
+        let seconds = 0;
+        let timerInterval; // Holds the interval ID
+        let timerRunning = false; // Prevents multiple intervals from being created
+
+        function updateTimer() {
+            const timer = document.getElementById("timer");
+            const session = document.getElementById("session");
+            const alarmSound = document.getElementById("alarmSound");
+
+            // Update the timer display
+            timer.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Handle the timer reaching zero
+            if (minutes === 0 && seconds === 0) {
+                alarmSound.play(); // Play the alarm sound
+
+                // Switch between work and break sessions
+                isWorkSession = !isWorkSession;
+                if (isWorkSession) {
+                    minutes = 50;
+                    session.textContent = "Work Session";
+                } else {
+                    minutes = 10;
+                    session.textContent = "Break Session";
+                }
+                seconds = 0;
+            } else {
+                // Decrement the timer
+                if (seconds === 0) {
+                    minutes -= 1;
+                    seconds = 59;
+                } else {
+                    seconds -= 1;
+                }
+            }
+        }
+
+        // Start the timer
+        document.getElementById("startButton").addEventListener("click", () => {
+            if (!timerRunning) {
+                timerInterval = setInterval(updateTimer, 1000);
+                timerRunning = true; // Prevent multiple intervals
+                document.getElementById("startButton").disabled = true; // Disable the button
+            }
+        });
+    </script>
+</body>
+</html>
