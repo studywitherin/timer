@@ -26,9 +26,9 @@
     <div>
         <div id="timer">50:00</div>
         <div id="session">Work Session</div>
-        <audio id="rainSound" src="https://www.soundjay.com/nature/rain-01.mp3" loop></audio>
-        <audio id="lofiMusic" src="https://www.fesliyanstudios.com/play-mp3/6736" loop></audio>
-        <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+        <audio id="rainSound" src="https://cdn.pixabay.com/download/audio/2023/03/20/audio_8c44478b84.mp3?filename=rain-ambient-50-minutes.mp3"></audio>
+        <audio id="lofiMusic" src="https://cdn.pixabay.com/download/audio/2022/03/01/audio_5b6f046609.mp3?filename=lofi-study-relax.mp3"></audio>
+        <audio id="alarmSound" src="https://cdn.pixabay.com/download/audio/2021/09/23/audio_1523652a85.mp3?filename=gentle-alarm.mp3"></audio>
     </div>
     <script>
         let isWorkSession = true; // Tracks whether it's a work or break session
@@ -58,11 +58,13 @@
                     minutes = 50;
                     session.textContent = "Work Session";
                     lofiMusic.pause();
+                    rainSound.currentTime = 0; // Restart rain sound
                     rainSound.play(); // Play rain sounds
                 } else {
                     minutes = 10;
                     session.textContent = "Break Session";
                     rainSound.pause();
+                    lofiMusic.currentTime = 0; // Restart lo-fi music
                     lofiMusic.play(); // Play lo-fi music
                 }
                 seconds = 0;
