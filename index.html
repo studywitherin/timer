@@ -26,8 +26,8 @@
     <div>
         <div id="timer">50:00</div>
         <div id="session">Work Session</div>
-        <audio id="rainSound" src="https://www.soundjay.com/nature/rain-01.mp3"></audio>
-        <audio id="lofiMusic" src="https://open.spotify.com/playlist/5qiwrK1Eg5g89fnbdY2sqd?si=4055170114f44f4a"></audio>
+        <audio id="rainSound" src="https://www.soundjay.com/nature/rain-01.mp3" loop></audio>
+        <audio id="lofiMusic" src="https://www.soundjay.com/free-music/chill-01.mp3" loop></audio>
         <audio id="alarmSound" src="https://pixabay.com/sound-effects/alarm-clock-short-6402/"></audio>
     </div>
     <script>
@@ -79,12 +79,12 @@
             }
         }
 
-        // Start the timer after a 20-second delay
+        // Start the timer after a 60-second delay
         window.onload = () => {
             setTimeout(() => {
                 rainSound.play(); // Start rain sounds initially
                 timerInterval = setInterval(updateTimer, 1000); // Start the timer
-            }, 90000); // 20-second delay
+            }, 60000); // 20-second delay
         };
     </script>
 </body>
