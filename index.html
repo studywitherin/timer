@@ -27,8 +27,7 @@
         <div id="timer">50:00</div>
         <div id="session">Work Session</div>
         <audio id="rainSound" src="https://www.soundjay.com/nature/rain-01.mp3" loop></audio>
-        <audio id="lofiMusic" src="https://www.soundjay.com/free-music/chill-01.mp3" loop></audio>
-        <audio id="alarmSound" src="https://pixabay.com/sound-effects/alarm-clock-short-6402/"></audio>
+        <audio id="lofiMusic" src="https://open.spotify.com/playlist/5qiwrK1Eg5g89fnbdY2sqd?si=11f7f8e9e0e84782"></audio>
     </div>
     <script>
         let isWorkSession = true; // Tracks whether it's a work or break session
@@ -38,7 +37,21 @@
 
         const rainSound = document.getElementById("rainSound");
         const lofiMusic = document.getElementById("lofiMusic");
-        const alarmSound = document.getElementById("alarmSound");
+
+        function fadeOut(audioElement, duration) {
+            let volume = audioElement.volume;
+            const fadeStep = volume / (duration / 100);
+
+            const fadeInterval = setInterval(() => {
+                volume = Math.max(0, volume - fadeStep);
+                audioElement.volume = volume;
+
+                if (volume <= 0) {
+                    clearInterval(fadeInterval);
+                    audioElement.pause();
+                }
+            }, 100);
+        }
 
         function updateTimer() {
             const timer = document.getElementById("timer");
@@ -47,25 +60,30 @@
             // Update the timer display
             timer.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
+            // Handle fading out sounds a few seconds before session ends
+            if (minutes === 0 && seconds === 5) {
+                if (isWorkSession) {
+                    fadeOut(rainSound, 5000); // Fade out rain in 5 seconds
+                } else {
+                    fadeOut(lofiMusic, 5000); // Fade out lo-fi in 5 seconds
+                }
+            }
+
             // Handle the timer reaching zero
             if (minutes === 0 && seconds === 0) {
-                alarmSound.play(); // Play the alarm sound
-
                 // Switch between work and break sessions
                 isWorkSession = !isWorkSession;
 
                 if (isWorkSession) {
                     minutes = 50;
                     session.textContent = "Work Session";
-                    lofiMusic.pause();
-                    rainSound.currentTime = 0; // Restart rain sound
-                    rainSound.play(); // Play rain sounds
+                    rainSound.volume = 1; // Reset rain sound volume
+                    rainSound.play();
                 } else {
                     minutes = 10;
                     session.textContent = "Break Session";
-                    rainSound.pause();
-                    lofiMusic.currentTime = 0; // Restart lo-fi music
-                    lofiMusic.play(); // Play lo-fi music
+                    lofiMusic.volume = 1; // Reset lo-fi volume
+                    lofiMusic.play();
                 }
                 seconds = 0;
             } else {
@@ -79,13 +97,15 @@
             }
         }
 
-        // Start the timer after a 60-second delay
+        // Start the timer after a 20-second delay
         window.onload = () => {
             setTimeout(() => {
+                rainSound.volume = 1; // Ensure the rain sound starts at full volume
                 rainSound.play(); // Start rain sounds initially
                 timerInterval = setInterval(updateTimer, 1000); // Start the timer
-            }, 60000); // 20-second delay
+            }, 20000); // 20-second delay
         };
     </script>
 </body>
 </html>
+
